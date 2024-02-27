@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: user-service
+
+#flyway
+  flyway:
+    enabled: false
+
+#hibernate
+  jpa:
+    show-sql: true
+    hibernate:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      ddl-auto: validate
+    properties:
+      hibernate:
+        generate_statistics: false
+        format_sql: true
+
+#db connect
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+#redis caching
+  data:
+    redis:
+      host: ${CACHE_HOST}
+      port: ${CACHE_PORT}
+      password: ${CACHE_PASSWORD}
+  cache:
+    type: redis
+
+#logs
+logging:
+  level:
+    web: INFO
+
+#  server
+server:
+  port: 8081
+
+#app values
+app:
+  enabled: true
