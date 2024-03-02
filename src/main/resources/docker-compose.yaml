@@ -1,0 +1,9 @@
+services:
+  user-service:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: user_service
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    ports:
+      - 5432
