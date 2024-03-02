@@ -19,17 +19,17 @@ spring:
 
 #db connect
   datasource:
-    url: jdbc:postgresql://localhost:5432/user_service
-    username: postgres
-    password: admin
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/user_service}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:admin}
     driver-class-name: org.postgresql.Driver
 
 #redis caching
   data:
     redis:
-      host: localhost
-      port: 16379
-      password: admin
+      host: ${CACHE_HOST}
+      port: ${CACHE_PORT}
+      password: ${CACHE_PASSWORD}
   cache:
     type: redis
 
