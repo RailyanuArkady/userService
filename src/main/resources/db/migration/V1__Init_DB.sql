@@ -28,7 +28,7 @@ create table passports
     created_at                 timestamp(6)    not null,
     modified_at                timestamp(6),
     user_id                    bigint          not null unique references users (id),
-    primary key (id)
+    primary key (id),
 
     constraint unique_passport unique (passport_series, passport_number)
 );
