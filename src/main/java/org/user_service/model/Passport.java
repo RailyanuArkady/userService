@@ -33,7 +33,7 @@ public class Passport {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     private User user;
 
 
