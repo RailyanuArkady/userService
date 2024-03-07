@@ -19,7 +19,7 @@ spring:
 
 #db connect
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5433/user-service}
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/user-service}
     username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:admin}
     driver-class-name: org.postgresql.Driver

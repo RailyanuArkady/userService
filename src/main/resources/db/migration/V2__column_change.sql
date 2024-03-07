@@ -1,0 +1,9 @@
+ALTER TABLE passports
+ALTER COLUMN modified_at SET NOT NULL;
+
+
+ALTER TABLE users
+ALTER COLUMN modified_at SET NOT NULL;
+
+ALTER TABLE users
+ALTER COLUMN sex TYPE varchar(12);
