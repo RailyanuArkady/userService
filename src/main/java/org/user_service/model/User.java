@@ -25,10 +25,9 @@ public class User {
     @UuidGenerator
     private UUID externalId;
     private String phone;
-    private String email;
     @Enumerated(EnumType.STRING)
     private PersonSex sex;
-    private String photoUrl;
+    private String photoId;
     private boolean isDeleted;
     private LocalDate birthdate;
     @CreationTimestamp
@@ -37,4 +36,11 @@ public class User {
     private LocalDateTime modifiedAt;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Passport passport;
+
+    @PrePersist
+    public void prePersist() {
+        if (externalId == null) {
+            externalId = UUID.randomUUID();
+        }
+    }
 }

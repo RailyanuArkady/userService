@@ -36,5 +36,10 @@ public class Passport {
     @OneToOne
     private User user;
 
-
+    @PrePersist
+    public void prePersist() {
+        if (externalId == null) {
+            externalId = UUID.randomUUID();
+        }
+    }
 }
