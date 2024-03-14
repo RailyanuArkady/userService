@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,12 +21,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user-sequence")
     @SequenceGenerator(name = "user-sequence", allocationSize = 1)
     private Long id;
-    @UuidGenerator
     private UUID externalId;
     private String phone;
     @Enumerated(EnumType.STRING)
     private PersonSex sex;
-    private String photoId;
+    private UUID photoId;
     private boolean isDeleted;
     private LocalDate birthdate;
     @CreationTimestamp
@@ -36,11 +34,4 @@ public class User {
     private LocalDateTime modifiedAt;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Passport passport;
-
-    @PrePersist
-    public void prePersist() {
-        if (externalId == null) {
-            externalId = UUID.randomUUID();
-        }
-    }
 }

@@ -7,7 +7,7 @@ create table users
     external_id        uuid              not null,
     phone              varchar(20)       unique,
     sex                varchar(12)       not null,
-    photo_id           varchar(255),
+    photo_id           uuid,
     is_deleted         boolean           not null,
     birthdate          date              not null,
     created_at         timestamp(6)      not null,
