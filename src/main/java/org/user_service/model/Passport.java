@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,7 +21,6 @@ public class Passport {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "passport-sequence")
     @SequenceGenerator(name = "passport-sequence", allocationSize = 1)
     private Long id;
-    @UuidGenerator
     private UUID externalId;
     private String passportSeries;
     private String passportNumber;

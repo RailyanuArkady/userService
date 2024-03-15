@@ -6,13 +6,12 @@ create table users
     id                 bigint            not null,
     external_id        uuid              not null,
     phone              varchar(20)       unique,
-    email              varchar(255)      not null unique,
-    sex                varchar(6)        not null,
-    photo_url          varchar(255),
+    sex                varchar(12)       not null,
+    photo_id           uuid,
     is_deleted         boolean           not null,
     birthdate          date              not null,
     created_at         timestamp(6)      not null,
-    modified_at        timestamp(6),
+    modified_at        timestamp(6)      not null,
     primary key (id)
 );
 
@@ -26,7 +25,7 @@ create table passports
     passport_division_code     varchar (6)     not null,
     passport_date_of_issue     date            not null,
     created_at                 timestamp(6)    not null,
-    modified_at                timestamp(6),
+    modified_at                timestamp(6)    not null,
     user_id                    bigint          not null unique references users (id),
     primary key (id),
 
