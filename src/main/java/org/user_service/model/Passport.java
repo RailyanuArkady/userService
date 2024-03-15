@@ -33,4 +33,6 @@ public class Passport {
     private LocalDateTime modifiedAt;
     @OneToOne
     private User user;
+
+
 }

@@ -34,4 +34,16 @@ public class User {
     private LocalDateTime modifiedAt;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Passport passport;
+
+    public void setPassport(Passport passport) {
+        this.passport = passport;
+        passport.setUser(this);
+    }
+
+    public void removePassport() {
+        if (this.passport != null) {
+            this.passport.setUser(null);
+            this.passport = null;
+        }
+    }
 }
