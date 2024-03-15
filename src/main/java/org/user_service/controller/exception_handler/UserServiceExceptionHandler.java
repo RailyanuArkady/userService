@@ -10,7 +10,7 @@ import org.user_service.dto.response.ErrorResponseDto;
 import java.time.LocalDateTime;
 
 @RestControllerAdvice
-public class UserExceptionHandler {
+public class UserServiceExceptionHandler {
 
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
