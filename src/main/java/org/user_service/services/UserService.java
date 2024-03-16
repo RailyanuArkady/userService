@@ -1,9 +1,11 @@
 package org.user_service.services;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.user_service.dto.request.UserRequestDTO;
+import org.user_service.dto.response.GetUserResponseDTO;
 import org.user_service.mapper.UserMapper;
 import org.user_service.model.User;
 import org.user_service.repository.UserRepository;
@@ -31,9 +33,12 @@ public class UserService {
         return userRepository.save(user).getExternalId();
     }
 
-    //на будущее
-    public User findOne(long id) {
+    public GetUserResponseDTO findUserById(Long id) {
         Optional<User> optionalUser = userRepository.findById(id);
-        return optionalUser.orElse(null);
+        boolean deleteStatus = optionalUser.filter(user -> !user.isDeleted()).isPresent();
+        if (!deleteStatus) {
+            throw new EntityNotFoundException("Entity not found or marked as Deleted");
+        }
+        return userMapper.userToResponseDTO(optionalUser.get());
     }
 }
