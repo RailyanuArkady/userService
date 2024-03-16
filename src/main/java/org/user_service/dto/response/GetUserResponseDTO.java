@@ -1,6 +1,5 @@
 package org.user_service.dto.response;
 
-import org.user_service.dto.request.PassportRequestDTO;
 import org.user_service.model.PersonSex;
 
 import java.time.LocalDate;
@@ -11,5 +10,5 @@ public record GetUserResponseDTO(
         PersonSex sex,
         UUID photoId,
         LocalDate birthdate,
-        PassportRequestDTO passport) {
+        PassportResponseDTO passport) {
 }
