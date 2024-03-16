@@ -5,7 +5,7 @@ import org.user_service.model.PersonSex;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public record GetUserResponseDTO(
+public record UserResponseDTO(
         String phone,
         PersonSex sex,
         UUID photoId,

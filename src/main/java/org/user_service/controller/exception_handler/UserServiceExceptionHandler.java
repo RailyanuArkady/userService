@@ -1,6 +1,5 @@
 package org.user_service.controller.exception_handler;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,6 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.user_service.dto.response.ErrorResponseDTO;
 
 import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 public class UserServiceExceptionHandler {
@@ -29,9 +29,9 @@ public class UserServiceExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(EntityNotFoundException.class)
-    private ErrorResponseDTO handleNotFoundException(EntityNotFoundException e) {
+    @ExceptionHandler(NoSuchElementException.class)
+    private ErrorResponseDTO handleNotFoundException(NoSuchElementException e) {
         return new ErrorResponseDTO(HttpStatus.NOT_FOUND.value(),
-                e.getMessage(), LocalDateTime.now());
+                "Entity not found or marked as Deleted", LocalDateTime.now());
     }
 }

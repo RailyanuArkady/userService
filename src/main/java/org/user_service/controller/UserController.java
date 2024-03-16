@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.user_service.dto.request.UserRequestDTO;
 import org.user_service.dto.response.CreateUserResponseDTO;
-import org.user_service.dto.response.GetUserResponseDTO;
+import org.user_service.dto.response.UserResponseDTO;
 import org.user_service.services.UserService;
 
 @RestController
@@ -24,7 +24,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public GetUserResponseDTO getUserById(@PathVariable Long id) {
+    public UserResponseDTO getUserById(@PathVariable Long id) {
         return userService.findUserById(id);
     }
 }
