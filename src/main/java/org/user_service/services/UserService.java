@@ -1,5 +1,6 @@
 package org.user_service.services;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,7 +11,6 @@ import org.user_service.model.User;
 import org.user_service.repository.UserRepository;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -33,6 +33,19 @@ public class UserService {
     }
 
     public UserResponseDTO findUserById(Long id) {
-        return userMapper.userToResponseDTO(userRepository.findById(id).orElseThrow(NoSuchElementException::new));
+        return userMapper.userToResponseDTO(userRepository.findById(id).orElseThrow(EntityNotFoundException::new));
+    }
+
+    @Transactional
+    public void updateUser(Long id, UserRequestDTO userRequestDTO) {
+        userRepository.updateUserAndPassport(id, userRequestDTO.phone(),
+                userRequestDTO.sex().toString(),
+                userRequestDTO.photoId(),
+                userRequestDTO.birthdate(),
+                userRequestDTO.passport().passportSeries(),
+                userRequestDTO.passport().passportNumber(),
+                userRequestDTO.passport().passportDivisionName(),
+                userRequestDTO.passport().passportDivisionCode(),
+                userRequestDTO.passport().passportDateOfIssue());
     }
 }

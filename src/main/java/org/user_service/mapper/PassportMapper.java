@@ -15,5 +15,4 @@ public interface PassportMapper {
 
     @Mapping(target = "externalId", expression = "java(UUID.randomUUID())")
     Passport passportRequestDTOToPassport(PassportRequestDTO passportRequestDTO);
-
 }
