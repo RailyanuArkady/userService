@@ -33,6 +33,6 @@ public class UserService {
     }
 
     public UserResponseDTO findUserById(Long id) {
-        return userMapper.userToResponseDTO(userRepository.findById(id).orElseThrow(NoSuchElementException::new));
+        return userMapper.userToResponseDTO(userRepository.findById(id).orElseThrow(EntityNotFoundException::new));
     }
 }
