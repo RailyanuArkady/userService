@@ -4,7 +4,7 @@ import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.user_service.dto.request.UserRequestDTO;
-import org.user_service.dto.response.GetUserResponseDTO;
+import org.user_service.dto.response.UserResponseDTO;
 import org.user_service.model.User;
 
 import java.util.UUID;
