@@ -4,12 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.user_service.dto.request.UserRequestDTO;
+import org.user_service.dto.response.UserResponseDTO;
 import org.user_service.mapper.UserMapper;
 import org.user_service.model.User;
 import org.user_service.repository.UserRepository;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -31,9 +32,7 @@ public class UserService {
         return userRepository.save(user).getExternalId();
     }
 
-    //на будущее
-    public User findOne(long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        return optionalUser.orElse(null);
+    public UserResponseDTO findUserById(Long id) {
+        return userMapper.userToResponseDTO(userRepository.findById(id).orElseThrow(EntityNotFoundException::new));
     }
 }
