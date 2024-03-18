@@ -37,15 +37,9 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUser(Long id, UserRequestDTO userRequestDTO) {
-        userRepository.updateUserAndPassport(id, userRequestDTO.phone(),
-                userRequestDTO.sex().toString(),
-                userRequestDTO.photoId(),
-                userRequestDTO.birthdate(),
-                userRequestDTO.passport().passportSeries(),
-                userRequestDTO.passport().passportNumber(),
-                userRequestDTO.passport().passportDivisionName(),
-                userRequestDTO.passport().passportDivisionCode(),
-                userRequestDTO.passport().passportDateOfIssue());
+    public UserResponseDTO updateUser(Long id, UserRequestDTO userRequestDTO) {
+        User user = userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        userMapper.updateUserFromDTO(userRequestDTO, user);
+        return userMapper.userToResponseDTO(user);
     }
 }

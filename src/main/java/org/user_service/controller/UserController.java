@@ -31,7 +31,6 @@ public class UserController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UserResponseDTO updateUserByID(@PathVariable Long id, @Valid @RequestBody UserRequestDTO userRequestDTO) {
-        userService.updateUser(id, userRequestDTO);
-        return userService.findUserById(id);
+        return userService.updateUser(id, userRequestDTO);
     }
 }

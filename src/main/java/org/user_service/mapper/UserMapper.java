@@ -3,6 +3,7 @@ package org.user_service.mapper;
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.user_service.dto.request.UserRequestDTO;
 import org.user_service.dto.response.UserResponseDTO;
 import org.user_service.model.User;
@@ -18,5 +19,7 @@ public interface UserMapper {
     User dtoToUser(UserRequestDTO userRequestDTO);
 
     UserResponseDTO userToResponseDTO(User user);
+
+    void updateUserFromDTO(UserRequestDTO userRequestDTO, @MappingTarget User user);
 
 }
