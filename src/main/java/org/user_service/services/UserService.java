@@ -42,4 +42,10 @@ public class UserService {
         userMapper.updateUserFromDTO(userRequestDTO, user);
         return userMapper.userToResponseDTO(user);
     }
+
+    @Transactional
+    public void deleteUser (Long id){
+        User user = userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        user.setDeleted(true);
+    }
 }
