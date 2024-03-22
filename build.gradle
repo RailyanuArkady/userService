@@ -60,9 +60,6 @@ dependencies {
 test{
     useJUnitPlatform()
 }
-test{
-    useJUnitPlatform()
-}
 
 dependencyManagement {
     imports {
