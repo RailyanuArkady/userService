@@ -1,8 +1,11 @@
 package org.user_service.services.util;
 
 import lombok.experimental.UtilityClass;
+<<<<<<< HEAD
 import org.user_service.dto.request.PassportRequestDTO;
 import org.user_service.dto.request.UserRequestDTO;
+=======
+>>>>>>> e3754af (task 12 findUserById unit test)
 import org.user_service.dto.response.PassportResponseDTO;
 import org.user_service.dto.response.UserResponseDTO;
 import org.user_service.model.Passport;
