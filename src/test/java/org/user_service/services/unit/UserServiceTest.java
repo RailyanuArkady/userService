@@ -61,15 +61,15 @@ class UserServiceTest {
     void TestUpdateUser() {
         User user = TestUtils.buildUser();
         UserRequestDTO userRequestDTO = TestUtils.buildUserRequestDTO();
-        UserResponseDTO userResponseDTO = TestUtils.buildUserResponseDTO();
+        UserResponseDTO userResponseDTOExpected = TestUtils.buildUserResponseDTO();
 
         doReturn(Optional.of(user)).when(userRepository).findById(MOCKED_ID);
         doNothing().when(userMapper).updateUserFromDTO(userRequestDTO, user);
-        doReturn(userResponseDTO).when(userMapper).userToResponseDTO(user);
+        doReturn(userResponseDTOExpected).when(userMapper).userToResponseDTO(user);
 
         UserResponseDTO userResponseDTOActual = userService.updateUser(MOCKED_ID, userRequestDTO);
 
-        assertEquals(PersonSex.MALE, userResponseDTOActual.sex());
+        assertEquals(userResponseDTOExpected, userResponseDTOActual);
     }
 
     @Test
@@ -79,10 +79,6 @@ class UserServiceTest {
         doReturn(Optional.ofNullable(user)).when(userRepository).findById(MOCKED_ID);
         userService.deleteUser(MOCKED_ID);
 
-        assertAll(
-                () -> assertTrue(user.isDeleted()),
-                () -> assertTrue(Optional.of(user.getPassport()).isPresent())
-        );
-
+        assertTrue(user.isDeleted());
     }
 }

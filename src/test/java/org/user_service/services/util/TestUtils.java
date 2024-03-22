@@ -61,22 +61,22 @@ public class TestUtils {
     public PassportResponseDTO buildPassportResponseDTO() {
         return new PassportResponseDTO("1234",
                 "123456",
-                "123456",
                 "Division name",
+                "123456",
                 MOCKED_DATE_TIME.toLocalDate());
     }
 
     public PassportRequestDTO buildPassportRequestDTO(){
         return new PassportRequestDTO("1234",
                 "123456",
-                "123456",
                 "Division name",
+                "123456",
                 MOCKED_DATE_TIME.toLocalDate());
     }
 
     public UserRequestDTO buildUserRequestDTO() {
         return new UserRequestDTO(PHONE,
-                PersonSex.FEMALE,
+                PersonSex.MALE,
                 MOCKED_UUID,
                 MOCKED_DATE_TIME.toLocalDate(),
                 buildPassportRequestDTO());
