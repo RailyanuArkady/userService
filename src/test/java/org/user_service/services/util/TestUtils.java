@@ -1,6 +1,8 @@
 package org.user_service.services.util;
 
 import lombok.experimental.UtilityClass;
+import org.user_service.dto.request.PassportRequestDTO;
+import org.user_service.dto.request.UserRequestDTO;
 import org.user_service.dto.response.PassportResponseDTO;
 import org.user_service.dto.response.UserResponseDTO;
 import org.user_service.model.Passport;
@@ -62,5 +64,21 @@ public class TestUtils {
                 "123456",
                 "Division name",
                 MOCKED_DATE_TIME.toLocalDate());
+    }
+
+    public PassportRequestDTO buildPassportRequestDTO(){
+        return new PassportRequestDTO("1234",
+                "123456",
+                "123456",
+                "Division name",
+                MOCKED_DATE_TIME.toLocalDate());
+    }
+
+    public UserRequestDTO buildUserRequestDTO() {
+        return new UserRequestDTO(PHONE,
+                PersonSex.FEMALE,
+                MOCKED_UUID,
+                MOCKED_DATE_TIME.toLocalDate(),
+                buildPassportRequestDTO());
     }
 }
