@@ -10,7 +10,6 @@ import org.user_service.mapper.UserMapper;
 import org.user_service.model.User;
 import org.user_service.repository.UserRepository;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -20,11 +19,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-
-    //на будущее
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
 
     @Transactional
     public UUID saveUser(UserRequestDTO userRequestDTO) {
