@@ -17,7 +17,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-//@SQLDelete(sql = "UPDATE users SET is_deleted = true WHERE id=?")
 @Where(clause = "is_deleted=false")
 public class User {
     @Id
@@ -41,12 +40,5 @@ public class User {
     public void setPassport(Passport passport) {
         this.passport = passport;
         passport.setUser(this);
-    }
-
-    public void removePassport() {
-        if (this.passport != null) {
-            this.passport.setUser(null);
-            this.passport = null;
-        }
     }
 }
