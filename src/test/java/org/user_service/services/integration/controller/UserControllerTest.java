@@ -1,9 +1,6 @@
 package org.user_service.services.integration.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +11,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.user_service.dto.request.PassportRequestDTO;
 import org.user_service.dto.request.UserRequestDTO;
+import org.user_service.dto.response.PassportResponseDTO;
+import org.user_service.dto.response.UserResponseDTO;
 import org.user_service.model.PersonSex;
 import org.user_service.repository.UserRepository;
 import org.user_service.services.util.TestUtils;
@@ -31,29 +30,38 @@ class UserControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private UserRepository userRepository;
-    private static ObjectMapper objectMapper;
 
-    @BeforeAll
-    static void setUp(){
-        objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-    }
     @Test
     void TestCreateUser() throws Exception {
         UserRequestDTO userRequestDTO = TestUtils.buildUserRequestDTO();
 
-        mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8081/public/api/v1/users")
+        mockMvc.perform(MockMvcRequestBuilders.post("/public/api/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(userRequestDTO)))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
+                .content(TestUtils.objectMapperConfig().writeValueAsString(userRequestDTO)))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id")
+                        .value(userRepository.findById(TestUtils.MOCKED_ID).get().getExternalId().toString()));
         assertTrue(userRepository.existsById(TestUtils.MOCKED_ID));
     }
 
     @Test
     void TestGetUserById() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("http://localhost:8081/public/api/v1/users/3"))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+        UserResponseDTO userResponseDTO = new UserResponseDTO(
+                "8 (921) 313-16-64",
+                PersonSex.MALE,
+                UUID.fromString("3fa85f64-5717-4562-b3fc-2c963f66afa6"),
+                LocalDateTime.now().toLocalDate(),
+                new PassportResponseDTO(
+                "4444",
+                "555555",
+                "strong",
+                "333333",
+                LocalDateTime.now().toLocalDate()));
+        String userResponseDTOJson = TestUtils.objectMapperConfig().writeValueAsString(userResponseDTO);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/public/api/v1/users/3"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(userResponseDTOJson));
         assertTrue(userRepository.existsById(3L));
     }
 
@@ -68,23 +76,24 @@ class UserControllerTest {
                 "Division name",
                 "987655",
                 LocalDateTime.now().toLocalDate()));
+        String userRequestDTOJson = TestUtils.objectMapperConfig().writeValueAsString(userRequestDTO);
 
-        mockMvc.perform(MockMvcRequestBuilders.put("http://localhost:8081/public/api/v1/users/2")
+        mockMvc.perform(MockMvcRequestBuilders.put("/public/api/v1/users/2")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(userRequestDTO)))
+                .content(TestUtils.objectMapperConfig().writeValueAsString(userRequestDTO)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(objectMapper.writeValueAsString(userRequestDTO)));
+                .andExpect(MockMvcResultMatchers.content().json(userRequestDTOJson));
     }
 
     @Test
     void TestDeleteUser() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("http://localhost:8081/public/api/v1/users/1"))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.delete("/public/api/v1/users/1"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 
     @Test
     void TestUserNotFoundException() throws Exception{
-        String nonExistUser = "http://localhost:8081/public/api/v1/users/999";
+        String nonExistUser = "/public/api/v1/users/999";
 
         mockMvc.perform(MockMvcRequestBuilders.get(nonExistUser))
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
