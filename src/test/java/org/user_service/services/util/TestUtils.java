@@ -22,7 +22,12 @@ public class TestUtils {
     public static final Long MOCKED_ID = 1L;
     public static final LocalDateTime MOCKED_DATE_TIME = LocalDateTime.now();
     public static final String PHONE = "+79217459553";
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    static {
+        OBJECT_MAPPER.registerModule(new JavaTimeModule());
+        OBJECT_MAPPER.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    }
 
     public User buildUser() {
         User user = User.builder()
@@ -70,7 +75,7 @@ public class TestUtils {
                 MOCKED_DATE_TIME.toLocalDate());
     }
 
-    public PassportRequestDTO buildPassportRequestDTO(){
+    public PassportRequestDTO buildPassportRequestDTO() {
         return new PassportRequestDTO("1234",
                 "123456",
                 "Division name",
@@ -86,9 +91,4 @@ public class TestUtils {
                 buildPassportRequestDTO());
     }
 
-    public ObjectMapper objectMapperConfig(){
-        OBJECT_MAPPER.registerModule(new JavaTimeModule());
-        OBJECT_MAPPER.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        return OBJECT_MAPPER;
-    }
 }
