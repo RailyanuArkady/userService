@@ -4,10 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -18,7 +15,7 @@ import org.user_service.dto.response.PassportResponseDTO;
 import org.user_service.dto.response.UserResponseDTO;
 import org.user_service.model.PersonSex;
 import org.user_service.repository.UserRepository;
-import org.user_service.services.util.IntegrationTestsUtils;
+import org.user_service.services.util.AbstractIntegrationTests;
 import org.user_service.services.util.TestUtils;
 
 import java.time.LocalDateTime;
@@ -26,10 +23,8 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@ActiveProfiles("test")
-class UserControllerTest extends IntegrationTestsUtils {
+
+class UserControllerTest extends AbstractIntegrationTests {
     @Autowired
     private MockMvc mockMvc;
     @Autowired

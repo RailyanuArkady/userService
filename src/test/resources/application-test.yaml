@@ -4,7 +4,6 @@ spring:
     password: test
   hibernate:
     dialect: org.hibernate.dialect.PostgreSQLDialect
-    ddl-auto: none
   sql:
     init:
       mode: always
