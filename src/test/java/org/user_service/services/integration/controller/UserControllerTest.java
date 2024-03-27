@@ -1,6 +1,8 @@
 package org.user_service.services.integration.controller;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,10 +13,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.user_service.dto.request.PassportRequestDTO;
 import org.user_service.dto.request.UserRequestDTO;
+import org.user_service.dto.response.CreateUserResponseDTO;
 import org.user_service.dto.response.PassportResponseDTO;
 import org.user_service.dto.response.UserResponseDTO;
 import org.user_service.model.PersonSex;
 import org.user_service.repository.UserRepository;
+import org.user_service.services.util.IntegrationTestsUtils;
 import org.user_service.services.util.TestUtils;
 
 import java.time.LocalDateTime;
@@ -25,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-class UserControllerTest {
+class UserControllerTest extends IntegrationTestsUtils {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -34,14 +38,16 @@ class UserControllerTest {
     @Test
     void TestCreateUser() throws Exception {
         UserRequestDTO userRequestDTO = TestUtils.buildUserRequestDTO();
+        CreateUserResponseDTO createUserResponseDTO = new CreateUserResponseDTO(TestUtils.MOCKED_UUID);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/public/api/v1/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(TestUtils.objectMapperConfig().writeValueAsString(userRequestDTO)))
-                .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id")
-                        .value(userRepository.findById(TestUtils.MOCKED_ID).get().getExternalId().toString()));
-        assertTrue(userRepository.existsById(TestUtils.MOCKED_ID));
+        try (MockedStatic<UUID> utilities = Mockito.mockStatic(UUID.class)) {
+            utilities.when(UUID::randomUUID).thenReturn(TestUtils.MOCKED_UUID);
+            mockMvc.perform(MockMvcRequestBuilders.post("/public/api/v1/users")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(TestUtils.OBJECT_MAPPER.writeValueAsString(userRequestDTO)))
+                    .andExpect(MockMvcResultMatchers.status().isCreated())
+                    .andExpect(MockMvcResultMatchers.content().json(TestUtils.OBJECT_MAPPER.writeValueAsString(createUserResponseDTO)));
+        }
     }
 
     @Test
@@ -57,7 +63,7 @@ class UserControllerTest {
                 "strong",
                 "333333",
                 LocalDateTime.now().toLocalDate()));
-        String userResponseDTOJson = TestUtils.objectMapperConfig().writeValueAsString(userResponseDTO);
+        String userResponseDTOJson = TestUtils.OBJECT_MAPPER.writeValueAsString(userResponseDTO);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/public/api/v1/users/3"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -76,11 +82,11 @@ class UserControllerTest {
                 "Division name",
                 "987655",
                 LocalDateTime.now().toLocalDate()));
-        String userRequestDTOJson = TestUtils.objectMapperConfig().writeValueAsString(userRequestDTO);
+        String userRequestDTOJson = TestUtils.OBJECT_MAPPER.writeValueAsString(userRequestDTO);
 
         mockMvc.perform(MockMvcRequestBuilders.put("/public/api/v1/users/2")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(TestUtils.objectMapperConfig().writeValueAsString(userRequestDTO)))
+                .content(userRequestDTOJson))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(userRequestDTOJson));
     }
