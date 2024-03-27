@@ -4,11 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.experimental.UtilityClass;
-<<<<<<< HEAD
 import org.user_service.dto.request.PassportRequestDTO;
 import org.user_service.dto.request.UserRequestDTO;
-=======
->>>>>>> e3754af (task 12 findUserById unit test)
 import org.user_service.dto.response.PassportResponseDTO;
 import org.user_service.dto.response.UserResponseDTO;
 import org.user_service.model.Passport;
