@@ -1,5 +1,8 @@
 package org.user_service.services.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.experimental.UtilityClass;
 import org.user_service.dto.request.PassportRequestDTO;
 import org.user_service.dto.request.UserRequestDTO;
@@ -19,6 +22,7 @@ public class TestUtils {
     public static final Long MOCKED_ID = 1L;
     public static final LocalDateTime MOCKED_DATE_TIME = LocalDateTime.now();
     public static final String PHONE = "+79217459553";
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     public User buildUser() {
         User user = User.builder()
@@ -80,5 +84,11 @@ public class TestUtils {
                 MOCKED_UUID,
                 MOCKED_DATE_TIME.toLocalDate(),
                 buildPassportRequestDTO());
+    }
+
+    public ObjectMapper objectMapperConfig(){
+        OBJECT_MAPPER.registerModule(new JavaTimeModule());
+        OBJECT_MAPPER.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        return OBJECT_MAPPER;
     }
 }

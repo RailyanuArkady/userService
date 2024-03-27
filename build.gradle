@@ -8,9 +8,9 @@ group = 'org.user_service'
 version = '1.0-SNAPSHOT'
 java.sourceCompatibility = JavaVersion.VERSION_17
 
-ext {
-    set('testcontainersVersion', "1.17.6")
-}
+//ext {
+//    set('testcontainersVersion', "1.17.6")
+//}
 
 configurations {
     compileOnly {
@@ -29,6 +29,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 //    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
@@ -53,8 +54,9 @@ dependencies {
 
     // tests
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.testcontainers:junit-jupiter'
-    testImplementation 'org.testcontainers:postgresql'
+//    testImplementation 'org.testcontainers:junit-jupiter'
+//    testImplementation 'org.testcontainers:postgresql'
+    testImplementation 'com.h2database:h2'
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
 }
@@ -62,8 +64,8 @@ test{
     useJUnitPlatform()
 }
 
-dependencyManagement {
-    imports {
-        mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
-    }
-}
+//dependencyManagement {
+//    imports {
+//        mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
+//    }
+//}
