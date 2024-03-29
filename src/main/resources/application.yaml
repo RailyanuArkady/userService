@@ -27,9 +27,8 @@ spring:
 #redis caching
   data:
     redis:
-      host: ${CACHE_HOST}
-      port: ${CACHE_PORT}
-      password: ${CACHE_PASSWORD}
+      host: ${CACHE_HOST:localhost}
+      port: ${CACHE_PORT:6379}
   cache:
     type: redis
 

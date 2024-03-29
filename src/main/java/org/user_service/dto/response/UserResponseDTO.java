@@ -2,6 +2,7 @@ package org.user_service.dto.response;
 
 import org.user_service.model.PersonSex;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -10,5 +11,5 @@ public record UserResponseDTO(
         PersonSex sex,
         UUID photoId,
         LocalDate birthdate,
-        PassportResponseDTO passport) {
+        PassportResponseDTO passport)  implements Serializable {
 }
