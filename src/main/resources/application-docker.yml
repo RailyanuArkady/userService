@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: user-service
+
+  jpa:
+    show-sql: true
+    hibernate:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      ddl-auto: validate
+    properties:
+      hibernate:
+        generate_statistics: false
+        format_sql: true
+
+  datasource:
+    url: jdbc:postgresql://postgres:5432/user_service
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    validate-on-migrate: true
+
+  data:
+    redis:
+      host: redis
+      port: 6379
+
+logging:
+  level:
+    web: INFO
+
+server:
+  port: 8081
+
+app:
+  enabled: true
+
+cache:
+  type: redis
