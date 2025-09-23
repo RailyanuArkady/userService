@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  # PostgreSQL база данных
+  # PostgreSQL
   postgres:
     image: postgres:15-alpine
     environment:
@@ -15,7 +15,7 @@ services:
     networks:
       - app-network
 
-  # Redis для кэширования
+  # Redis
   redis:
     image: redis:7-alpine
     ports:
@@ -25,7 +25,7 @@ services:
     networks:
       - app-network
 
-  # Ваше Spring Boot приложение
+  # Spring Boot
   user-service:
     build: .
     ports:
