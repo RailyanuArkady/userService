@@ -18,9 +18,6 @@ import java.util.UUID;
 @EqualsAndHashCode(of = "id")
 @Accessors(chain = true)
 public class Users {
-//    public enum Gender {
-//        MALE,FEMALE
-//    }
     @Id
     @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
@@ -28,7 +25,6 @@ public class Users {
     private UUID externalId;
     private String phone;
     private String email;
-//    @Enumerated(value = EnumType.STRING)
     private String sex;
     private String photoUrl;
     private Boolean isDeleted = false;
