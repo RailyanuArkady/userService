@@ -33,5 +33,6 @@ public class Passport {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Users user;
 }
