@@ -1,4 +1,4 @@
-package com.example.userserviсe;
+package com.example.userserviсe.entitys;
 
 import jakarta.persistence.*;
 import lombok.*;
