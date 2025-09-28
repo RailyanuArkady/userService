@@ -22,8 +22,11 @@ spring:
     validate-on-migrate: true
 
   # для всех профилей
-  cache:
-    type: redis
+  spring:
+    flyway:
+      enabled: true
+      locations: classpath:db/migration
+      baseline-on-migrate: true
 
 # local
 ---
@@ -49,7 +52,7 @@ spring:
     activate:
       on-profile: docker
   datasource:
-    url: jdbc:postgresql://postgres:5432/user_service
+    url: jdbc:postgresql://postgres:5432/use   r_service
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver

@@ -1,4 +1,4 @@
-package com.example.userserviсe.entitys;
+package com.example.userserviсe.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -6,8 +6,8 @@ import lombok.experimental.Accessors;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,7 +19,7 @@ import java.util.UUID;
 @Accessors(chain = true)
 public class Passport {
     @Id
-    @SequenceGenerator(name = "passport_sequence", sequenceName = "passport_sequence", allocationSize = 1)
+    @SequenceGenerator(name = "passport_sequence", sequenceName = "passport-sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "passport_sequence")
     private Long id;
     private UUID externalId;
@@ -27,8 +27,7 @@ public class Passport {
     private String passportNumber;
     private String passportDivisionName;
     private String passportDivisionCode;
-    @Temporal(TemporalType.DATE)
-    private Date passportDateOfIssue;
+    private LocalDate passportDateOfIssue;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp
