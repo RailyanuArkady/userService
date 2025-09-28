@@ -53,7 +53,7 @@ spring:
     activate:
       on-profile: docker
   datasource:
-    url: jdbc:postgresql://postgres:5432/use   r_service
+    url: jdbc:postgresql://postgres:5432/user_service
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
