@@ -7,5 +7,4 @@ public record ErrorResponse(
         String error,
         String description,
         LocalDateTime dateTime
-) {
-}
+) {}

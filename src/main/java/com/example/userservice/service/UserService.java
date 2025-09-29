@@ -1,12 +1,9 @@
 package com.example.userservice.service;
 
 import com.example.userservice.dto.UserCreateRequest;
-import com.example.userservice.dto.UserResponse;
-import com.example.userservice.dto.UserUpdateRequest;
+import com.example.userservice.entities.Passport;
 import com.example.userservice.entities.Users;
-import com.example.userservice.exception.UserNotFoundException;
-import com.example.userservice.mapper.PassportMapper;
-import com.example.userservice.mapper.UserMapper;
+import com.example.userservice.exception.PhoneAlreadyExistsException;
 import com.example.userservice.repository.PassportRepository;
 import com.example.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,38 +15,39 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
     private final UserRepository userRepository;
     private final PassportRepository passportRepository;
-    private final UserMapper userMapper;
-    private final PassportMapper passportMapper;
-
-    @Transactional(readOnly = true)
-    public UUID createUser(UserCreateRequest request) {
-        Users user = userMapper.toResponsePass(request, passportMapper);
-        return userRepository.save(user).getExternalId();
-    }
-
-    @Transactional(readOnly = true)
-    public UserResponse getUserByExternalId(UUID externalId) {
-        Users user = userRepository.findByExternalId(externalId)
-                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + externalId));
-        return userMapper.toResponse(user, passportMapper);
-    }
-
-    @Transactional(readOnly = true)
-    public UserResponse updateUser(UUID externalId, UserUpdateRequest request) {
-        Users user = userRepository.findByExternalId(externalId).orElseThrow(()
-                -> new UserNotFoundException("User not found with id: " + externalId));
-        userMapper.updateUser(request, user);
-        return userMapper.toResponse(user, passportMapper);
-    }
 
     @Transactional
-    public void deleteUser(UUID externalId) {
-        Users user = userRepository.findByExternalId(externalId).orElseThrow(()
-                -> new UserNotFoundException("User not found with id: " + externalId));
-        user.setDeleted(true);
+    public UUID createUser(UserCreateRequest request) {
+        if (userRepository.existsByPhone(request.phone())) {
+            throw new PhoneAlreadyExistsException(
+                    "User with phone " + request.phone() + " already exists"
+            );
+        }
+        Users user = new Users()
+                .setExternalId(UUID.randomUUID())
+                .setPhone(request.phone())
+                .setEmail(request.email())
+                .setSex(request.sex())
+                .setPhotoUrl(request.photoId().toString())
+                .setBirthdate(request.birthdate())
+                .setIsDeleted(false);
+
+        Users savedUser = userRepository.save(user);
+
+        Passport passport = new Passport()
+                .setExternalId(UUID.randomUUID())
+                .setPassportSeries(request.passport().passportSeries())
+                .setPassportNumber(request.passport().passportNumber())
+                .setPassportDivisionName(request.passport().passportDivisionName())
+                .setPassportDivisionCode(request.passport().passportDivisionCode())
+                .setPassportDateOfIssue(request.passport().passportDateOfIssue())
+                .setUser(savedUser);
+
+        passportRepository.save(passport);
+
+        return savedUser.getExternalId();
     }
-
-
 }

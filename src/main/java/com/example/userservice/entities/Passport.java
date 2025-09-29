@@ -9,14 +9,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "passports")
 @Getter
 @Setter
-@Builder
 @EqualsAndHashCode(of = "id")
 @Accessors(chain = true)
 public class Passport {
