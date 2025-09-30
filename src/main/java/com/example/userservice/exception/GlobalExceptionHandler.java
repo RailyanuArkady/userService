@@ -18,8 +18,11 @@ public class GlobalExceptionHandler {
             return buildErrorResponse("PHONE_ALREADY_EXISTS", ex.getMessage(), HttpStatus.BAD_REQUEST);
         } else if (ex instanceof EmailAlreadyExistsException) {
             return buildErrorResponse("EMAIL_ALREADY_EXISTS", ex.getMessage(), HttpStatus.BAD_REQUEST);
+        } else if (ex instanceof PassportAlreadyExistsException) {
+            return buildErrorResponse("PASSPORT_ALREADY_EXISTS", ex.getMessage(), HttpStatus.BAD_REQUEST);
         } else {
-            return buildErrorResponse("INTERNAL_SERVER_ERROR", "Internal server error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+            return buildErrorResponse("INTERNAL_SERVER_ERROR", "Internal server" +
+                    " error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     private ResponseEntity<ErrorResponse> buildErrorResponse(String errorCode, String message, HttpStatus status) {
