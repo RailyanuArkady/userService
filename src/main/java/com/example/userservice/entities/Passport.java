@@ -15,6 +15,7 @@ import java.util.UUID;
 @Table(name = "passports")
 @Getter
 @Setter
+@Builder
 @EqualsAndHashCode(of = "id")
 @Accessors(chain = true)
 public class Passport {

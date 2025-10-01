@@ -1,5 +1,6 @@
 package com.example.userservice.entities;
 
+import com.example.userservice.enums.Sex;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @Table(name = "users")
 @Setter
 @Getter
+@Builder
 @EqualsAndHashCode(of = "id")
 @Accessors(chain = true)
 public class Users {
@@ -29,7 +31,8 @@ public class Users {
     private UUID externalId;
     private String phone;
     private String email;
-    private String sex;
+    @Enumerated(EnumType.STRING)
+    private Sex sex;
     private String photoUrl;
     private Boolean isDeleted = false;
     private LocalDate birthdate;
