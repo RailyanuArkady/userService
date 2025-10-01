@@ -7,12 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.UUID;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/public/api/v1/users")
@@ -20,13 +15,11 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
-
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<UserCreateResponse> createUser(
             @Valid @RequestBody UserCreateRequest request) {
-
-        UUID externalId = userService.createUser(request);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new UserCreateResponse(externalId));
+                .body(new UserCreateResponse(userService.createUser(request)));
     }
 }
