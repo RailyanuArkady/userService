@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public record PassportCreateRequest(
+        //паттерны на серию и номер
         @NotBlank String passportSeries,
         @NotBlank String passportNumber,
         @NotBlank String passportDivisionName,

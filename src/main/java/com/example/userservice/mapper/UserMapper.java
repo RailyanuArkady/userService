@@ -6,6 +6,7 @@ import com.example.userservice.entities.Users;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+//дополнить маппер, полями isDeleted и externalId должны прямо тут выставлять, проверить мапиться ли паспорт, скорее всего нет для этого над классом надо еще добавить uses = {}
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
@@ -18,6 +19,6 @@ public interface UserMapper {
     @Mapping(target = "photoUrl", source = "photoId")
     Users toEntity(UserCreateRequest request);
 
-    @Mapping(target = "externalId", source = "externalId")
+    //не используется
     UserCreateResponse toResponse(Users user);
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 
 @Component
+//удалить класс
 public class UserFactory {
 
     public Users enrichWithBusinessLogic(Users user) {

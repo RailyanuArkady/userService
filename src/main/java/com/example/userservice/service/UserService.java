@@ -30,12 +30,15 @@ public class UserService {
 
     @Transactional
     public UUID createUser(UserCreateRequest request) {
+        //валидации можно вынести в дто
         validationService.validateUserCreation(request);
 
         Users user = userMapper.toEntity(request);
+        //лишний метод
         userFactory.enrichWithBusinessLogic(user);
         Users savedUser = userRepository.save(user);
 
+        //лишняя логика метод должен состоят из 2 строчек 1) маппинг пользака 2) сохранение в базу
         Passport passport = passportMapper.toEntity(request.passport());
         passportFactory.enrichWithBusinessLogic(passport, savedUser);
         passportRepository.save(passport);
