@@ -10,6 +10,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
+//удалить
 public class PassportFactory {
 
 

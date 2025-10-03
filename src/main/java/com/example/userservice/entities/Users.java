@@ -1,8 +1,21 @@
 package com.example.userservice.entities;
 
 import com.example.userservice.enums.Sex;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -20,12 +33,10 @@ import java.util.UUID;
 @Setter
 @Getter
 @Builder
+//могут возникнуть проблемы, потому что айди создается только после сохранения в базу, до сохранения в бд айди нет, есть только externalId
 @EqualsAndHashCode(of = "id")
 @Accessors(chain = true)
 public class Users {
-    @OneToMany(mappedBy = "user")
-    @Builder.Default
-    private List<Passport> passports = new ArrayList<>();
     @Id
     @SequenceGenerator(name = "user_sequence", sequenceName = "user-sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
@@ -43,5 +54,7 @@ public class Users {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
-
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<Passport> passports = new ArrayList<>();
 }

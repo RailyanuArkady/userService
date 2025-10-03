@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+//не нужен можно удалить, у нас нет сложных валидаций
 public class ValidationService {
 
     private final UserRepository userRepository;
