@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -23,6 +24,7 @@ import java.util.UUID;
 @Accessors(chain = true)
 public class Users {
     @OneToMany(mappedBy = "user")
+    @Builder.Default
     private List<Passport> passports = new ArrayList<>();
     @Id
     @SequenceGenerator(name = "user_sequence", sequenceName = "user-sequence", allocationSize = 1)
@@ -34,6 +36,7 @@ public class Users {
     @Enumerated(EnumType.STRING)
     private Sex sex;
     private String photoUrl;
+    @Builder.Default
     private Boolean isDeleted = false;
     private LocalDate birthdate;
     @CreationTimestamp

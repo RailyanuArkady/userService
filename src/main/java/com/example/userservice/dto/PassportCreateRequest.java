@@ -12,4 +12,5 @@ public record PassportCreateRequest(
         @NotBlank String passportDivisionName,
         @NotBlank String passportDivisionCode,
         @NotNull LocalDate passportDateOfIssue
-) {}
+) {
+}
