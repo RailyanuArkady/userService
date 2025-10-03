@@ -5,6 +5,8 @@ import com.example.userservice.entities.Passport;
 import com.example.userservice.entities.Users;
 import com.example.userservice.factory.PassportFactory;
 import com.example.userservice.factory.UserFactory;
+import com.example.userservice.mapper.PassportMapper;
+import com.example.userservice.mapper.UserMapper;
 import com.example.userservice.repository.PassportRepository;
 import com.example.userservice.repository.UserRepository;
 import com.example.userservice.validation.ValidationService;
@@ -21,6 +23,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final PassportRepository passportRepository;
     private final ValidationService validationService;
+    private final UserMapper userMapper;
+    private final PassportMapper passportMapper;
     private final UserFactory userFactory;
     private final PassportFactory passportFactory;
 
@@ -28,10 +32,12 @@ public class UserService {
     public UUID createUser(UserCreateRequest request) {
         validationService.validateUserCreation(request);
 
-        Users user = userFactory.createUser(request);
+        Users user = userMapper.toEntity(request);
+        userFactory.enrichWithBusinessLogic(user);
         Users savedUser = userRepository.save(user);
 
-        Passport passport = passportFactory.createPassport(request.passport(), savedUser);
+        Passport passport = passportMapper.toEntity(request.passport());
+        passportFactory.enrichWithBusinessLogic(passport, savedUser);
         passportRepository.save(passport);
 
         return savedUser.getExternalId();

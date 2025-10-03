@@ -30,6 +30,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex) {
         return buildErrorResponse("INTERNAL_SERVER_ERROR", "Internal server error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
     @ExceptionHandler(InvalidDataFormatException.class)
     public ResponseEntity<ErrorResponse> handleInvalidDataFormat(InvalidDataFormatException ex) {
         return buildErrorResponse("INVALID_DATA_FORMAT", ex.getMessage(), HttpStatus.BAD_REQUEST);

@@ -15,4 +15,5 @@ public record UserCreateRequest(
         @NotNull LocalDate birthdate,
         @NotBlank String email,
         @Valid @NotNull PassportCreateRequest passport
-) {}
+) {
+}
