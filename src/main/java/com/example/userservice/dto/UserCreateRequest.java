@@ -12,9 +12,9 @@ import java.util.UUID;
 
 public record UserCreateRequest(
         @NotBlank
-        @Pattern(regexp = "somePhone")
+        @Pattern(regexp = "\\+?\\d{10,15}", message = "Invalid phone format")
         String phone,
-        @NotBlank
+        @NotNull
         Sex sex,
         @NotNull
         UUID photoId,
