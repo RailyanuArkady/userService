@@ -1,6 +1,9 @@
 package com.example.userservice.service;
 
+import com.example.userservice.dto.PassportUpdateRequest;
 import com.example.userservice.dto.UserCreateRequest;
+import com.example.userservice.dto.UserResponse;
+import com.example.userservice.dto.UserUpdateRequest;
 import com.example.userservice.entities.Users;
 import com.example.userservice.mapper.PassportMapper;
 import com.example.userservice.mapper.UserMapper;
@@ -25,4 +28,24 @@ public class UserService {
         Users user = userMapper.toResponsePass(request, passportMapper);
         return userRepository.save(user).getExternalId();
     }
+
+    public UserResponse getUserByExternalId(UUID externalId) {
+        Users user = userRepository.findOrThrow(externalId);
+        return userMapper.toResponse(user, passportMapper);
+    }
+
+    @Transactional
+    public UserResponse updateUser(UUID externalId, UserUpdateRequest request) {
+        Users user = userRepository.findOrThrow(externalId);
+        userMapper.updateUser(request, user);
+        return userMapper.toResponse(user, passportMapper);
+    }
+
+    @Transactional
+    public UserResponse updatePassport(UUID externalId, PassportUpdateRequest request) {
+        Users user = userRepository.findOrThrow(externalId);
+        userMapper.updatePassport(request, user, passportMapper);
+        return userMapper.toResponse(user, passportMapper);
+    }
+
 }
