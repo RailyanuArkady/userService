@@ -37,6 +37,11 @@ public class GlobalExceptionHandler {
         return buildErrorResponse("INVALID_DATA_FORMAT", ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotFound(UserNotFoundException ex) {
+        return buildErrorResponse("USER_NOT_FOUND", ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
     private ResponseEntity<ErrorResponse> buildErrorResponse(String errorCode, String message, HttpStatus status) {
         ErrorResponse error = new ErrorResponse(errorCode, message, LocalDateTime.now());
         return ResponseEntity.status(status).body(error);

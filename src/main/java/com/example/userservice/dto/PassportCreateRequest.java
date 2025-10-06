@@ -8,12 +8,17 @@ import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 public record PassportCreateRequest(
+        @NotBlank
         @Pattern(regexp = "\\d{4}", message = "Invalid passport series: must be 4 digits")
-        @NotBlank String passportSeries,
+        String passportSeries,
+        @NotBlank
         @Pattern(regexp = "\\d{6}", message = "Invalid passport number: must be 6 digits")
-        @NotBlank String passportNumber,
-        @NotBlank String passportDivisionName,
-        @NotBlank String passportDivisionCode,
-        @NotNull LocalDate passportDateOfIssue
+        String passportNumber,
+        @NotBlank
+        String passportDivisionName,
+        @NotBlank
+        String passportDivisionCode,
+        @NotNull
+        LocalDate passportDateOfIssue
 ) {
 }
