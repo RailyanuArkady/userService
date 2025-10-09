@@ -1,6 +1,9 @@
 package com.example.userservice.controller;
 
-import com.example.userservice.dto.*;
+import com.example.userservice.dto.UserCreateRequest;
+import com.example.userservice.dto.UserCreateResponse;
+import com.example.userservice.dto.UserResponse;
+import com.example.userservice.dto.UserUpdateRequest;
 import com.example.userservice.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,26 +25,26 @@ public class UserController {
         return new UserCreateResponse(userService.createUser(request));
     }
 
-    @GetMapping("/{externalUserId}")
+    @GetMapping("/{externalId}")
     @ResponseStatus(HttpStatus.OK)
-    public UserResponse getUser(@PathVariable UUID externalUserId) {
-        return userService.getUserByExternalId(externalUserId);
+    public UserResponse getUser(@PathVariable UUID externalId) {
+        return userService.getUserByExternalId(externalId);
     }
 
     @PutMapping("/{externalId}")
     @ResponseStatus(HttpStatus.OK)
     public UserResponse updateUser(@PathVariable UUID externalId,
-                                   @Valid @RequestBody UserUpdateRequest request
-    ) {
+                                   @Valid @RequestBody UserUpdateRequest request) {
         return userService.updateUser(externalId, request);
     }
 
-    @PutMapping("/{externalId}/passport")
-    @ResponseStatus(HttpStatus.OK)
-    public UserResponse updatePassport(@PathVariable UUID externalId,
-                                       @Valid @RequestBody PassportUpdateRequest request
-    ) {
-        return userService.updatePassport(externalId, request);
+    @DeleteMapping("/{externalId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(@PathVariable UUID externalId) {
+        userService.deleteUser(externalId);
+
+
     }
+
 
 }

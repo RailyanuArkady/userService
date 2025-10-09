@@ -20,6 +20,4 @@ public interface PassportMapper {
     void updateRequest(PassportUpdateRequest request, @MappingTarget Passport passport);
 
     PassportResponse toResponse(Passport passport);
-
-
 }
