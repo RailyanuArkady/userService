@@ -42,6 +42,4 @@ public interface UserMapper {
         Passport passport = user.getPassports().get(0);
         passportMapper.updateRequest(request, passport);
     }
-
-
 }
