@@ -1,11 +1,12 @@
 package com.example.userservice.mapper;
 
-import com.example.userservice.dto.UserCreateRequest;
-import com.example.userservice.dto.UserCreateResponse;
+import com.example.userservice.dto.*;
 import com.example.userservice.entities.Passport;
 import com.example.userservice.entities.Users;
+import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -18,7 +19,12 @@ public interface UserMapper {
     @Mapping(target = "modifiedAt", ignore = true)
     @Mapping(target = "photoUrl", source = "photoId")
     Users toEntity(UserCreateRequest request);
-    UserCreateResponse toResponse(Users user);
+
+    @Mapping(target = "photoId", source = "photoUrl")
+    @Mapping(target = "passport", source = "passports")
+    UserResponse toResponse(Users user, @Context PassportMapper passportMapper);
+
+    void updateUser(UserUpdateRequest request, @MappingTarget Users user);
 
     default Users toResponsePass(UserCreateRequest request, PassportMapper passportMapper) {
         Users user = toEntity(request);
@@ -26,5 +32,14 @@ public interface UserMapper {
         passport.setUser(user);
         user.setPassports(List.of(passport));
         return user;
+    }
+
+    default PassportResponse mapPassports(List<Passport> passports, @Context PassportMapper passportMapper) {
+        return passportMapper.toResponse(passports.get(0));
+    }
+
+    default void updatePassport(PassportUpdateRequest request, Users user, PassportMapper passportMapper) {
+        Passport passport = user.getPassports().get(0);
+        passportMapper.updateRequest(request, passport);
     }
 }

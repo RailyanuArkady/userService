@@ -1,7 +1,10 @@
 package com.example.userservice.service;
 
 import com.example.userservice.dto.UserCreateRequest;
+import com.example.userservice.dto.UserResponse;
+import com.example.userservice.dto.UserUpdateRequest;
 import com.example.userservice.entities.Users;
+import com.example.userservice.exception.UserNotFoundException;
 import com.example.userservice.mapper.PassportMapper;
 import com.example.userservice.mapper.UserMapper;
 import com.example.userservice.repository.PassportRepository;
@@ -20,9 +23,33 @@ public class UserService {
     private final UserMapper userMapper;
     private final PassportMapper passportMapper;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public UUID createUser(UserCreateRequest request) {
         Users user = userMapper.toResponsePass(request, passportMapper);
         return userRepository.save(user).getExternalId();
     }
+
+    @Transactional(readOnly = true)
+    public UserResponse getUserByExternalId(UUID externalId) {
+        Users user = userRepository.findByExternalId(externalId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + externalId));
+        return userMapper.toResponse(user, passportMapper);
+    }
+
+    @Transactional(readOnly = true)
+    public UserResponse updateUser(UUID externalId, UserUpdateRequest request) {
+        Users user = userRepository.findByExternalId(externalId).orElseThrow(()
+                -> new UserNotFoundException("User not found with id: " + externalId));
+        userMapper.updateUser(request, user);
+        return userMapper.toResponse(user, passportMapper);
+    }
+
+    @Transactional
+    public void deleteUser(UUID externalId) {
+        Users user = userRepository.findByExternalId(externalId).orElseThrow(()
+                -> new UserNotFoundException("User not found with id: " + externalId));
+        user.setDeleted(true);
+    }
+
+
 }
