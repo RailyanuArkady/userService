@@ -1,8 +1,8 @@
 package com.example.userservice.mapper;
 
-import com.example.userservice.dto.PassportCreateRequest;
-import com.example.userservice.dto.PassportResponse;
-import com.example.userservice.dto.PassportUpdateRequest;
+import com.example.userservice.dto.request.PassportCreateRequest;
+import com.example.userservice.dto.response.PassportResponse;
+import com.example.userservice.dto.request.PassportUpdateRequest;
 import com.example.userservice.entities.Passport;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

@@ -1,7 +1,6 @@
-package com.example.userservice.dto;
+package com.example.userservice.dto.request;
 
 import com.example.userservice.enums.Sex;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;

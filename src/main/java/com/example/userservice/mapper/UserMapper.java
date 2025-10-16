@@ -1,6 +1,10 @@
 package com.example.userservice.mapper;
 
-import com.example.userservice.dto.*;
+import com.example.userservice.dto.request.PassportUpdateRequest;
+import com.example.userservice.dto.request.UserCreateRequest;
+import com.example.userservice.dto.request.UserUpdateRequest;
+import com.example.userservice.dto.response.PassportResponse;
+import com.example.userservice.dto.response.UserResponse;
 import com.example.userservice.entities.Passport;
 import com.example.userservice.entities.Users;
 import org.mapstruct.Context;
