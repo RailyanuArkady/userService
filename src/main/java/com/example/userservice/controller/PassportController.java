@@ -1,7 +1,7 @@
 package com.example.userservice.controller;
 
-import com.example.userservice.dto.PassportUpdateRequest;
-import com.example.userservice.dto.UserResponse;
+import com.example.userservice.dto.request.PassportUpdateRequest;
+import com.example.userservice.dto.response.UserResponse;
 import com.example.userservice.service.PassportService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

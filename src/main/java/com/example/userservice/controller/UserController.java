@@ -1,9 +1,10 @@
 package com.example.userservice.controller;
 
-import com.example.userservice.dto.UserCreateRequest;
-import com.example.userservice.dto.UserCreateResponse;
-import com.example.userservice.dto.UserResponse;
-import com.example.userservice.dto.UserUpdateRequest;
+import com.example.userservice.dto.projection.UserProjection;
+import com.example.userservice.dto.request.UserCreateRequest;
+import com.example.userservice.dto.request.UserUpdateRequest;
+import com.example.userservice.dto.response.UserCreateResponse;
+import com.example.userservice.dto.response.UserResponse;
 import com.example.userservice.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +27,8 @@ public class UserController {
     }
 
     @GetMapping("/{externalId}")
-    @ResponseStatus(HttpStatus.OK)
-    public UserResponse getUser(@PathVariable UUID externalId) {
-        return userService.getUserByExternalId(externalId);
+    public UserProjection getUser(@PathVariable UUID externalId) {
+        return userService.getUser(externalId);
     }
 
     @PutMapping("/{externalId}")
@@ -43,8 +43,5 @@ public class UserController {
     public void deleteUser(@PathVariable UUID externalId) {
         userService.deleteUser(externalId);
 
-
     }
-
-
 }
