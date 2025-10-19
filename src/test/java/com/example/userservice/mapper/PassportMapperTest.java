@@ -4,6 +4,7 @@ import com.example.userservice.dto.request.PassportCreateRequest;
 import com.example.userservice.dto.request.PassportUpdateRequest;
 import com.example.userservice.dto.response.PassportResponse;
 import com.example.userservice.entities.Passport;
+import com.example.userservice.utils.TestDataFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -21,9 +22,7 @@ class PassportMapperTest {
     @Test
     @DisplayName("Map PassportCreateRequest to Passport entity")
     void toEntity_ShouldMapPassportCreateRequestToEntity() {
-        PassportCreateRequest request = new PassportCreateRequest(
-                "4510", "123456", "ОВД района", "770053", LocalDate.of(2020, 5, 15)
-        );
+        PassportCreateRequest request = TestDataFactory.createValidPassportRequest();
         Passport result = passportMapper.toEntity(request);
         assertThat(result).isNotNull();
         assertThat(result.getPassportSeries()).isEqualTo("4510");
@@ -41,15 +40,14 @@ class PassportMapperTest {
     @Test
     @DisplayName("Update Passport entity from PassportUpdateRequest")
     void updateRequest_ShouldUpdatePassportFromRequest() {
-        Passport passport = new Passport();
-        passport.setPassportSeries("4510");
-        passport.setPassportNumber("123456");
-        passport.setPassportDivisionName("Старое подразделение");
-        passport.setPassportDivisionCode("770053");
-        passport.setPassportDateOfIssue(LocalDate.of(2020, 5, 15));
-        PassportUpdateRequest updateRequest = new PassportUpdateRequest(
-                "4511", "654321", "Новое подразделение", "770054", LocalDate.of(2021, 6, 20)
-        );
+        Passport passport = Passport.builder()
+                .passportSeries("4510")
+                .passportNumber("123456")
+                .passportDivisionName("Старое подразделение")
+                .passportDivisionCode("770053")
+                .passportDateOfIssue(LocalDate.of(2020, 5, 15))
+                .build();
+        PassportUpdateRequest updateRequest = TestDataFactory.createValidPassportUpdateRequest();
         passportMapper.updateRequest(updateRequest, passport);
         assertThat(passport.getPassportSeries()).isEqualTo("4511");
         assertThat(passport.getPassportNumber()).isEqualTo("654321");
@@ -61,16 +59,17 @@ class PassportMapperTest {
     @Test
     @DisplayName("Map Passport entity to PassportResponse DTO")
     void toResponse_ShouldMapPassportToResponse() {
-        Passport passport = new Passport();
-        passport.setId(1L);
-        passport.setExternalId(UUID.randomUUID());
-        passport.setPassportSeries("4510");
-        passport.setPassportNumber("123456");
-        passport.setPassportDivisionName("ОВД района");
-        passport.setPassportDivisionCode("770053");
-        passport.setPassportDateOfIssue(LocalDate.of(2020, 5, 15));
-        passport.setCreatedAt(LocalDateTime.now());
-        passport.setModifiedAt(LocalDateTime.now());
+        Passport passport = Passport.builder()
+                .id(1L)
+                .externalId(UUID.randomUUID())
+                .passportSeries("4510")
+                .passportNumber("123456")
+                .passportDivisionName("ОВД района")
+                .passportDivisionCode("770053")
+                .passportDateOfIssue(LocalDate.of(2020, 5, 15))
+                .createdAt(LocalDateTime.now())
+                .modifiedAt(LocalDateTime.now())
+                .build();
         PassportResponse result = passportMapper.toResponse(passport);
         assertThat(result).isNotNull();
         assertThat(result.passportSeries()).isEqualTo("4510");

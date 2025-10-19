@@ -8,6 +8,7 @@ import com.example.userservice.dto.response.UserResponse;
 import com.example.userservice.entities.Passport;
 import com.example.userservice.entities.Users;
 import com.example.userservice.enums.Sex;
+import com.example.userservice.utils.TestDataFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,16 +36,13 @@ class UserMapperTest {
     @Test
     @DisplayName("Map UserCreateRequest to User entity")
     void toEntity_ShouldMapUserCreateRequestToEntity() {
-        UUID photoId = UUID.randomUUID();
-        UserCreateRequest request = new UserCreateRequest(
-                "+79161234567", Sex.MALE, photoId, LocalDate.of(1990, 1, 1),
-                "ivan@mail.ru", new PassportCreateRequest("4510", "123456", "ОВД", "770053", LocalDate.of(2020, 5, 15))
-        );
+        UserCreateRequest request = TestDataFactory.createValidUserRequest();
         Users result = userMapper.toEntity(request);
+
         assertThat(result).isNotNull();
         assertThat(result.getPhone()).isEqualTo("+79161234567");
         assertThat(result.getSex()).isEqualTo(Sex.MALE);
-        assertThat(result.getPhotoUrl()).isEqualTo(photoId);
+        assertThat(result.getPhotoUrl()).isEqualTo(request.photoId());
         assertThat(result.getBirthdate()).isEqualTo(LocalDate.of(1990, 1, 1));
         assertThat(result.getEmail()).isEqualTo("ivan@mail.ru");
         assertThat(result.getExternalId()).isNotNull();
@@ -58,25 +56,34 @@ class UserMapperTest {
     @Test
     @DisplayName("Map User entity to UserResponse with passport data")
     void toResponse_ShouldMapUserToResponseWithPassport() {
+
         UUID photoId = UUID.randomUUID();
-        Users user = new Users();
-        user.setId(1L);
-        user.setExternalId(UUID.randomUUID());
-        user.setPhone("+79161234567");
-        user.setSex(Sex.MALE);
-        user.setPhotoUrl(photoId);
-        user.setBirthdate(LocalDate.of(1990, 1, 1));
-        user.setEmail("ivan@mail.ru");
-        Passport passport = new Passport();
-        passport.setPassportSeries("4510");
-        passport.setPassportNumber("123456");
-        passport.setPassportDivisionName("ОВД района");
-        passport.setPassportDivisionCode("770053");
-        passport.setPassportDateOfIssue(LocalDate.of(2020, 5, 15));
+        UUID userId = UUID.randomUUID();
+
+        Users user = Users.builder()
+                .id(1L)
+                .externalId(userId)
+                .phone("+79161234567")
+                .sex(Sex.MALE)
+                .photoUrl(photoId)
+                .birthdate(LocalDate.of(1990, 1, 1))
+                .email("ivan@mail.ru")
+                .build();
+
+        Passport passport = Passport.builder()
+                .passportSeries("4510")
+                .passportNumber("123456")
+                .passportDivisionName("ОВД района")
+                .passportDivisionCode("770053")
+                .passportDateOfIssue(LocalDate.of(2020, 5, 15))
+                .build();
+
         user.setPassports(List.of(passport));
+
         PassportResponse passportResponse = new PassportResponse(
                 "4510", "123456", "ОВД района", "770053", LocalDate.of(2020, 5, 15)
         );
+
         when(passportMapper.toResponse(any(Passport.class))).thenReturn(passportResponse);
         UserResponse result = userMapper.toResponse(user, passportMapper);
         assertThat(result).isNotNull();
@@ -90,9 +97,9 @@ class UserMapperTest {
     @Test
     @DisplayName("Update User entity from UserUpdateRequest")
     void updateUser_ShouldUpdateUserFromRequest() {
-        Users user = new Users();
-        user.setPhone("old-phone");
-
+        Users user = Users.builder()
+                .phone("old-phone")
+                .build();
         UserUpdateRequest updateRequest = new UserUpdateRequest(
                 "new-phone", Sex.MALE, UUID.randomUUID(), LocalDate.now()
         );
@@ -121,12 +128,11 @@ class UserMapperTest {
     @Test
     @DisplayName("Return first passport response from passports list")
     void mapPassports_ShouldReturnFirstPassportResponse_WhenUserHasPassport() {
-        Passport passport = new Passport();
-        passport.setPassportSeries("4510");
-        passport.setPassportNumber("123456");
-        PassportResponse expectedResponse = new PassportResponse(
-                "4510", "123456", "ОВД", "770053", LocalDate.of(2020, 5, 15)
-        );
+        Passport passport = Passport.builder()
+                .passportSeries("4510")
+                .passportNumber("123456")
+                .build();
+        PassportResponse expectedResponse = TestDataFactory.createPassportResponse();
         when(passportMapper.toResponse(passport)).thenReturn(expectedResponse);
         PassportResponse result = userMapper.mapPassports(List.of(passport), passportMapper);
         assertThat(result).isEqualTo(expectedResponse);
@@ -136,15 +142,17 @@ class UserMapperTest {
     @DisplayName("Always include passport in user response")
     void toResponse_ShouldAlwaysIncludePassport_InUserResponse() {
         UUID photoId = UUID.randomUUID();
-        Users user = new Users();
-        user.setPhone("+79161234567");
-        user.setSex(Sex.MALE);
-        user.setPhotoUrl(photoId);
-        user.setBirthdate(LocalDate.of(1990, 1, 1));
-        user.setEmail("ivan@mail.ru");
-        Passport passport = new Passport();
-        passport.setPassportSeries("4510");
-        passport.setPassportNumber("123456");
+        Users user = Users.builder()
+                .phone("+79161234567")
+                .sex(Sex.MALE)
+                .photoUrl(photoId)
+                .birthdate(LocalDate.of(1990, 1, 1))
+                .email("ivan@mail.ru")
+                .build();
+        Passport passport = Passport.builder()
+                .passportSeries("4510")
+                .passportNumber("123456")
+                .build();
         user.setPassports(List.of(passport));
         PassportResponse passportResponse = new PassportResponse(
                 "4510", "123456", "ОВД", "770053", LocalDate.of(2020, 5, 15)

@@ -13,6 +13,7 @@ import com.example.userservice.mapper.PassportMapper;
 import com.example.userservice.mapper.UserMapper;
 import com.example.userservice.repository.PassportRepository;
 import com.example.userservice.repository.UserRepository;
+import com.example.userservice.utils.TestDataFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,10 +48,7 @@ class UserServiceTest {
     @Test
     @DisplayName("Create user with valid data and save to repository")
     void createUser_ShouldCreateAndSaveUser() {
-        UserCreateRequest createRequest = new UserCreateRequest(
-                "+79161234567", Sex.MALE, UUID.randomUUID(), LocalDate.of(1990, 1, 1),
-                "ivan@mail.ru", new PassportCreateRequest("4510", "123456", "ОВД", "770053", LocalDate.of(2020, 5, 15))
-        );
+        UserCreateRequest createRequest = TestDataFactory.createValidUserRequest();
         Users user = new Users();
         user.setExternalId(UUID.randomUUID());
         Users savedUser = new Users();
@@ -90,15 +88,10 @@ class UserServiceTest {
     @DisplayName("Update user data and return updated response")
     void updateUser_ShouldUpdateAndReturnUserResponse() {
         UUID userId = UUID.randomUUID();
-        UserUpdateRequest updateRequest = new UserUpdateRequest(
-                "+79161111111", Sex.MALE, UUID.randomUUID(), LocalDate.of(1990, 1, 1)
-        );
+        UserUpdateRequest updateRequest = TestDataFactory.createInvalidUserUpdateRequest();
         Users user = new Users();
         user.setExternalId(userId);
-        UserResponse expectedResponse = new UserResponse(
-                "+79161111111", Sex.MALE, UUID.randomUUID(), LocalDate.of(1990, 1, 1),
-                new PassportResponse("4510", "123456", "ОВД", "770053", LocalDate.of(2020, 5, 15))
-        );
+        UserResponse expectedResponse = TestDataFactory.createUserResponse();
         when(userRepository.findByExternalId(userId)).thenReturn(Optional.of(user));
         when(userMapper.toResponse(user, passportMapper)).thenReturn(expectedResponse);
         UserResponse result = userService.updateUser(userId, updateRequest);
@@ -112,9 +105,7 @@ class UserServiceTest {
     @DisplayName("Throw UserNotFoundException when updating non-existent user")
     void updateUser_ShouldThrowUserNotFoundException_WhenUserNotFound() {
         UUID userId = UUID.randomUUID();
-        UserUpdateRequest updateRequest = new UserUpdateRequest(
-                "+79161111111", Sex.MALE, UUID.randomUUID(), LocalDate.of(1990, 1, 1)
-        );
+        UserUpdateRequest updateRequest = TestDataFactory.createInvalidUserUpdateRequest();
         when(userRepository.findByExternalId(userId)).thenReturn(Optional.empty());
         assertThatThrownBy(() -> userService.updateUser(userId, updateRequest))
                 .isInstanceOf(UserNotFoundException.class)
@@ -152,10 +143,7 @@ class UserServiceTest {
     @Test
     @DisplayName("Return saved user externalId after creation")
     void createUser_ShouldReturnSavedUserExternalId() {
-        UserCreateRequest createRequest = new UserCreateRequest(
-                "+79161234567", Sex.MALE, UUID.randomUUID(), LocalDate.of(1990, 1, 1),
-                "ivan@mail.ru", new PassportCreateRequest("4510", "123456", "ОВД", "770053", LocalDate.of(2020, 5, 15))
-        );
+        UserCreateRequest createRequest = TestDataFactory.createValidUserRequest();
         Users user = new Users();
         Users savedUser = new Users();
         UUID expectedExternalId = UUID.randomUUID();
