@@ -6,6 +6,7 @@ import com.example.userservice.dto.response.UserResponse;
 import com.example.userservice.enums.Sex;
 import com.example.userservice.exception.UserNotFoundException;
 import com.example.userservice.service.PassportService;
+import com.example.userservice.utils.TestDataFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,27 +44,11 @@ public class PassportControllerTest {
     @Test
     @DisplayName("Return user response when passport update is successful")
     void updatePassport_WithValidData_ReturnsUserResponse() throws Exception {
-        PassportUpdateRequest request = new PassportUpdateRequest(
-                "4510",
-                "123456",
-                "ОВД Тверского района г. Москвы",
-                "770053",
-                LocalDate.of(2020, 5, 15)
-        );
-        PassportResponse passportResponse = new PassportResponse(
-                "4510",
-                "123456",
-                "ОВД Тверского района г. Москвы",
-                "770053",
-                LocalDate.of(2020, 5, 15)
-        );
-        UserResponse expectedResponse = new UserResponse(
-                "+79161234567",
-                Sex.MALE,
-                null,
-                LocalDate.of(1990, 1, 15),
-                passportResponse
-        );
+        PassportUpdateRequest request = TestDataFactory.createValidPassportUpdateRequest();
+
+        PassportResponse passportResponse = TestDataFactory.createPassportResponse();
+        UserResponse expectedResponse = TestDataFactory.createUserResponse();
+
         when(passportService.updatePassport(eq(testUserId), any(PassportUpdateRequest.class)))
                 .thenReturn(expectedResponse);
         mockMvc.perform(put("/public/api/v1/users/{userId}/passport", testUserId)
@@ -72,7 +57,7 @@ public class PassportControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.phone").value("+79161234567"))
                 .andExpect(jsonPath("$.sex").value("MALE"))
-                .andExpect(jsonPath("$.birthdate").value("1990-01-15"))
+                .andExpect(jsonPath("$.birthdate").value("1990-01-01"))
                 .andExpect(jsonPath("$.passport.passportSeries").value("4510"))
                 .andExpect(jsonPath("$.passport.passportNumber").value("123456"));
     }
@@ -80,13 +65,7 @@ public class PassportControllerTest {
     @Test
     @DisplayName("Return not found when user does not exist")
     void updatePassport_WithNonExistentUser_ReturnsNotFound() throws Exception {
-        PassportUpdateRequest request = new PassportUpdateRequest(
-                "4510",
-                "123456",
-                "ОВД Тверского района г. Москвы",
-                "770053",
-                LocalDate.of(2020, 5, 15)
-        );
+        PassportUpdateRequest request = TestDataFactory.createValidPassportUpdateRequest();
         UUID nonExistentUserId = UUID.fromString("999e4567-e89b-12d3-a456-426614174000");
 
         when(passportService.updatePassport(eq(nonExistentUserId), any(PassportUpdateRequest.class)))
@@ -100,13 +79,7 @@ public class PassportControllerTest {
     @Test
     @DisplayName("Return bad request when passport data is invalid")
     void updatePassport_WithInvalidPassportData_ReturnsBadRequest() throws Exception {
-        PassportUpdateRequest invalidRequest = new PassportUpdateRequest(
-                "45A0",
-                "12345",
-                "ОВД",
-                "77053",
-                LocalDate.of(2020, 5, 15)
-        );
+        PassportUpdateRequest invalidRequest = TestDataFactory.createInvalidPassportUpdate();
 
         mockMvc.perform(put("/public/api/v1/users/{userId}/passport", testUserId)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -120,13 +93,7 @@ public class PassportControllerTest {
     @Test
     @DisplayName("Return bad request when passport division name is empty")
     void updatePassport_WithEmptyDivisionName_ReturnsBadRequest() throws Exception {
-        PassportUpdateRequest invalidRequest = new PassportUpdateRequest(
-                "4510",
-                "123456",
-                "",
-                "770053",
-                LocalDate.of(2020, 5, 15)
-        );
+        PassportUpdateRequest invalidRequest = TestDataFactory.createPassportRequestWithEmptyDivision();
         mockMvc.perform(put("/public/api/v1/users/{userId}/passport", testUserId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(invalidRequest)))
