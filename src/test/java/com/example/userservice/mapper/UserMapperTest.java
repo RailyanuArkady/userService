@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import static com.example.userservice.utils.TestDataFactory.createValidPassportRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -114,7 +115,7 @@ class UserMapperTest {
         UUID photoId = UUID.randomUUID();
         UserCreateRequest request = new UserCreateRequest(
                 "+79161234567", Sex.MALE, photoId, LocalDate.of(1990, 1, 1),
-                "ivan@mail.ru", new PassportCreateRequest("4510", "123456", "ОВД", "770053", LocalDate.of(2020, 5, 15))
+                "ivan@mail.ru", createValidPassportRequest()
         );
         Passport mockPassport = new Passport();
         when(passportMapper.toEntity(any(PassportCreateRequest.class))).thenReturn(mockPassport);
@@ -155,7 +156,8 @@ class UserMapperTest {
                 .build();
         user.setPassports(List.of(passport));
         PassportResponse passportResponse = new PassportResponse(
-                "4510", "123456", "ОВД", "770053", LocalDate.of(2020, 5, 15)
+                "4510", "123456", "ОВД",
+                "770053", LocalDate.of(2020, 5, 15)
         );
         when(passportMapper.toResponse(any(Passport.class))).thenReturn(passportResponse);
         UserResponse result = userMapper.toResponse(user, passportMapper);

@@ -2,10 +2,7 @@ package com.example.userservice.utils;
 
 import com.example.userservice.dto.projection.PassportProjection;
 import com.example.userservice.dto.projection.UserProjection;
-import com.example.userservice.dto.request.PassportCreateRequest;
-import com.example.userservice.dto.request.PassportUpdateRequest;
-import com.example.userservice.dto.request.UserCreateRequest;
-import com.example.userservice.dto.request.UserUpdateRequest;
+import com.example.userservice.dto.request.*;
 import com.example.userservice.dto.response.PassportResponse;
 import com.example.userservice.dto.response.UserResponse;
 import com.example.userservice.entities.Passport;
@@ -20,26 +17,47 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public final class TestDataFactory {
+    private TestDataFactory() {
+    }
+
+    private static PassportData createValidPassportData() {
+        return new PassportData("4510", "123456", "ОВД района",
+                "770053", LocalDate.of(2020, 5, 15));
+    }
+
+    private static PassportData createUpdatedPassportData() {
+        return new PassportData("4511", "654321",
+                "Новое подразделение", "770054", LocalDate.of(2021,
+                6, 20));
+    }
+
+    private static PassportData createInvalidPassportData() {
+        return new PassportData("45A0", "12345", "ОВД",
+                "77053", LocalDate.of(2020, 5, 15));
+    }
+
+    private static PassportData createPassportDataWithEmptyDivision() {
+        return new PassportData("4510", "123456", "",
+                "770053", LocalDate.of(2020, 5, 15));
+    }
+
+    private static PassportData createPassportDataWithNullDate() {
+        return new PassportData("4510", "123456", "ОВД",
+                "770053", null);
+    }
 
     public static PassportCreateRequest createValidPassportRequest() {
-        return new PassportCreateRequest(
-                "4510", "123456", "ОВД района", "770053", LocalDate.of(2020, 5, 15)
-        );
+        return new PassportCreateRequest(createValidPassportData());
     }
+
     public static UserUpdateRequest createInvalidUserUpdateRequest() {
-        return new UserUpdateRequest(
-                "invalid-phone",
-                null,
-                null,
-                null
-        );
+        return new UserUpdateRequest("invalid-phone", null, null, null);
     }
 
     public static PassportUpdateRequest createValidPassportUpdateRequest() {
-        return new PassportUpdateRequest(
-                "4511", "654321", "Новое подразделение", "770054", LocalDate.of(2021, 6, 20)
-        );
+        return new PassportUpdateRequest(createUpdatedPassportData());
     }
+
     public static Passport createPassportEntity() {
         return Passport.builder()
                 .passportSeries("4510")
@@ -50,17 +68,20 @@ public final class TestDataFactory {
                 .externalId(UUID.randomUUID())
                 .build();
     }
+
     public static UserCreateRequest createValidUserRequest() {
         return new UserCreateRequest(
                 "+79161234567", Sex.MALE, UUID.randomUUID(), LocalDate.of(1990, 1, 1),
                 "ivan@mail.ru", createValidPassportRequest()
         );
     }
+
     public static UserUpdateRequest createValidUserUpdateRequest() {
         return new UserUpdateRequest(
                 "+79161111111", Sex.MALE, UUID.randomUUID(), LocalDate.of(1990, 1, 1)
         );
     }
+
     public static Users createUserEntity() {
         Users user = Users.builder()
                 .externalId(UUID.randomUUID())
@@ -78,16 +99,18 @@ public final class TestDataFactory {
 
         return user;
     }
+
     public static PassportCreateRequest createInvalidPassportRequest() {
-        return new PassportCreateRequest(
-                "45A0", "12345", "", "77053", LocalDate.of(2020, 5, 15)
-        );
+        return new PassportCreateRequest(createInvalidPassportData());
     }
+
     public static PassportResponse createPassportResponse() {
         return new PassportResponse(
-                "4510", "123456", "ОВД района", "770053", LocalDate.of(2020, 5, 15)
+                "4510", "123456", "ОВД района",
+                "770053", LocalDate.of(2020, 5, 15)
         );
     }
+
     public static UserResponse createUserResponse() {
         return new UserResponse(
                 "+79161234567",
@@ -97,6 +120,7 @@ public final class TestDataFactory {
                 createPassportResponse()
         );
     }
+
     public static UserProjection createUserProjection() {
         UserProjection projection = mock(UserProjection.class);
 
@@ -109,6 +133,7 @@ public final class TestDataFactory {
 
         return projection;
     }
+
     public static PassportProjection createPassportProjection() {
         PassportProjection projection = mock(PassportProjection.class);
 
@@ -120,32 +145,16 @@ public final class TestDataFactory {
 
         return projection;
     }
+
     public static PassportUpdateRequest createInvalidPassportUpdate() {
-        return new PassportUpdateRequest(
-                "45A0",
-                "12345",
-                "ОВД",
-                "77053",
-                LocalDate.of(2020, 5, 15)
-        );
+        return new PassportUpdateRequest(createInvalidPassportData());
     }
+
     public static PassportUpdateRequest createPassportRequestWithEmptyDivision() {
-        return new PassportUpdateRequest(
-                "4510",
-                "123456",
-                "",
-                "770053",
-                LocalDate.of(2020, 5, 15)
-        );
+        return new PassportUpdateRequest(createPassportDataWithEmptyDivision());
     }
+
     public static PassportUpdateRequest createPassportRequestWithNullDate() {
-        return new PassportUpdateRequest(
-                "4510",
-                "123456",
-                "ОВД",
-                "770053",
-                null
-        );
+        return new PassportUpdateRequest(createPassportDataWithNullDate());
     }
 }
-

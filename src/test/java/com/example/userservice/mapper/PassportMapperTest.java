@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class PassportMapperTest {
 
@@ -25,19 +26,28 @@ class PassportMapperTest {
         PassportCreateRequest request = TestDataFactory.createValidPassportRequest();
         Passport result = passportMapper.toEntity(request);
         assertThat(result).isNotNull();
-        assertThat(result.getPassportSeries()).isEqualTo("4510");
-        assertThat(result.getPassportNumber()).isEqualTo("123456");
-        assertThat(result.getPassportDivisionName()).isEqualTo("ОВД района");
-        assertThat(result.getPassportDivisionCode()).isEqualTo("770053");
-        assertThat(result.getPassportDateOfIssue()).isEqualTo(LocalDate.of(2020, 5, 15));
-        assertThat(result.getExternalId()).isNotNull();
-        assertThat(result.getId()).isNull();
-        assertThat(result.getUser()).isNull();
-        assertThat(result.getCreatedAt()).isNull();
-        assertThat(result.getModifiedAt()).isNull();
-    }
 
+        assertAll("Passport mapping verification",
+                () -> assertThat(result.getPassportSeries()).isEqualTo("4510"),
+                () -> assertThat(result.getPassportNumber()).isEqualTo("123456"),
+                () -> assertThat(result.getPassportDivisionName()).isEqualTo("ОВД района"),
+                () -> assertThat(result.getPassportDivisionCode()).isEqualTo("770053"),
+                () -> assertThat(result.getPassportDateOfIssue()).isEqualTo(LocalDate.of(2020, 5, 15)),
+                () -> assertThat(result.getExternalId()).isNotNull(),
+                () -> assertThat(result.getId()).isNull(),
+                () -> assertThat(result.getUser()).isNull(),
+                () -> assertThat(result.getCreatedAt()).isNull(),
+                () -> assertThat(result.getModifiedAt()).isNull()
+        );
+    }
     @Test
+    void debugPassportRequestStructure() {
+        PassportCreateRequest request = TestDataFactory.createValidPassportRequest();
+        System.out.println("Request: " + request);
+        System.out.println("Passport series: " + request.passport().passportSeries());
+        System.out.println("Passport number: " + request.passport().passportNumber());
+    }
+        @Test
     @DisplayName("Update Passport entity from PassportUpdateRequest")
     void updateRequest_ShouldUpdatePassportFromRequest() {
         Passport passport = Passport.builder()

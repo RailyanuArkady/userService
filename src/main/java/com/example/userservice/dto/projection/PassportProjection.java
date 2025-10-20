@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.time.LocalDate;
 
-@JsonPropertyOrder({"passportSeries", "passportNumber", "passportDivisionName",
-        "passportDivisionCode", "passportDateOfIssue"})
 public interface PassportProjection {
     String getPassportSeries();
 
