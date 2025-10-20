@@ -1,7 +1,7 @@
 package com.example.userservice.service;
 
-import com.example.userservice.dto.PassportUpdateRequest;
-import com.example.userservice.dto.UserResponse;
+import com.example.userservice.dto.request.PassportUpdateRequest;
+import com.example.userservice.dto.response.UserResponse;
 import com.example.userservice.entities.Users;
 import com.example.userservice.exception.UserNotFoundException;
 import com.example.userservice.mapper.PassportMapper;
@@ -21,10 +21,10 @@ public class PassportService {
     private final PassportMapper passportMapper;
     private final UserMapper userMapper;
 
-    @Transactional(readOnly = true)
+    @Transactional
     public UserResponse updatePassport(UUID externalId, PassportUpdateRequest request) {
         Users user = userRepository.findByExternalId(externalId)
-                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + externalId));
+                .orElseThrow(() -> new UserNotFoundException(String.format("User not found with id: %s", externalId)));
         userMapper.updatePassport(request, user, passportMapper);
         return userMapper.toResponse(user, passportMapper);
     }
