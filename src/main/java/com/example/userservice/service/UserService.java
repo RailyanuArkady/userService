@@ -32,7 +32,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserProjection getUser(UUID externalId) {
-        return userRepository.findProjectionId(externalId).orElseThrow(()
+        return userRepository.findByExternalIdAndIsDeletedFalse(externalId).orElseThrow(()
                 -> new UserNotFoundException(String.format("User not found with id: %s", externalId)));
     }
 
