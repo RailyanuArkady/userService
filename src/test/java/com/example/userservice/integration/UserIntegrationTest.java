@@ -12,13 +12,11 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class UserIntegrationTest extends BaseIntegrationTest {
 
     @Test
@@ -41,7 +39,6 @@ class UserIntegrationTest extends BaseIntegrationTest {
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(getResponse.getBody()).isNotNull();
         assertThat(getResponse.getBody().phone()).isEqualTo("+79161234567");
-        assertThat(getResponse.getBody().passport()).isNotNull();
         assertThat(getResponse.getBody().passport().passportSeries()).isEqualTo("4510");
     }
 
