@@ -67,21 +67,21 @@ class UserServiceTest {
     void getUser_ShouldReturnUserProjection() {
         UUID userId = UUID.randomUUID();
         UserProjection expectedProjection = mock(UserProjection.class);
-        when(userRepository.findProjectionId(userId)).thenReturn(Optional.of(expectedProjection));
+        when(userRepository.findByExternalIdAndIsDeletedFalse(userId)).thenReturn(Optional.of(expectedProjection));
         UserProjection result = userService.getUser(userId);
         assertThat(result).isEqualTo(expectedProjection);
-        verify(userRepository).findProjectionId(userId);
+        verify(userRepository).findByExternalIdAndIsDeletedFalse(userId);
     }
 
     @Test
     @DisplayName("Throw UserNotFoundException when getting non-existent user")
     void getUser_ShouldThrowUserNotFoundException_WhenUserNotFound() {
         UUID userId = UUID.randomUUID();
-        when(userRepository.findProjectionId(userId)).thenReturn(Optional.empty());
+        when(userRepository.findByExternalIdAndIsDeletedFalse(userId)).thenReturn(Optional.empty());
         assertThatThrownBy(() -> userService.getUser(userId))
                 .isInstanceOf(UserNotFoundException.class)
                 .hasMessage("User not found with id: " + userId);
-        verify(userRepository).findProjectionId(userId);
+        verify(userRepository).findByExternalIdAndIsDeletedFalse(userId);
     }
 
     @Test
